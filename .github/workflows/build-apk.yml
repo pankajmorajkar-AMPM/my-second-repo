@@ -20,11 +20,13 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - uses: android-actions/setup-android@v3
+      - name: Check Android SDK
+        run: echo "ANDROID_HOME=$ANDROID_HOME" && ls "$ANDROID_HOME"
 
       - name: Build APK
         run: |
           chmod +x gradlew
+          set -o pipefail
           ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee build.log
 
       - name: Save build log on failure
